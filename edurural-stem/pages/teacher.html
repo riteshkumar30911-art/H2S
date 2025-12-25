@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2196F3">
+    <title>Teacher Dashboard - EduRural STEM</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="teacher-page">
+    <div class="offline-banner hidden" id="offlineBanner">
+        <span class="offline-icon">⚠️</span>
+        <span class="offline-text" data-i18n="offline_mode">You are in Offline Mode</span>
+    </div>
+
+    <nav class="navbar navbar-teacher">
+        <div class="navbar-content">
+            <h1 class="navbar-logo">
+                <span class="logo-icon">👨‍🏫</span>
+                <span data-i18n="teacher_dashboard">Teacher Dashboard</span>
+            </h1>
+            <div class="navbar-actions">
+                <div class="status-indicator">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span class="status-text" id="statusText" data-i18n="online">Online</span>
+                </div>
+                <button id="languageToggle" class="language-toggle">
+                    <span class="lang-indicator" data-lang="en">EN</span>
+                    <span class="lang-separator">/</span>
+                    <span class="lang-indicator" data-lang="hi">HI</span>
+                </button>
+                <button id="logoutBtn" class="btn btn-small" data-i18n="logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="teacher-main">
+        <div class="teacher-container">
+            <!-- Welcome Section -->
+            <section class="teacher-welcome">
+                <h2 data-i18n="welcome">Welcome, <span id="teacherName">Teacher</span>!</h2>
+                <p class="subtitle" data-i18n="monitor_students">Monitor your students' progress and performance</p>
+            </section>
+
+            <!-- Teacher Statistics -->
+            <section class="teacher-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalStudents">0</div>
+                        <div class="stat-label" data-i18n="total_students">Total Students</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="completedQuizzes">0</div>
+                        <div class="stat-label" data-i18n="quizzes_completed">Quizzes Completed</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="avgScore">0%</div>
+                        <div class="stat-label" data-i18n="class_average">Class Average</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="needsAttention">0</div>
+                        <div class="stat-label" data-i18n="needs_attention">Needs Attention</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Search and Filter -->
+            <section class="search-filter">
+                <div class="search-box">
+                    <input type="text" id="studentSearch" class="search-input" placeholder="Search students...">
+                </div>
+                <div class="filter-options">
+                    <select id="subjectFilter" class="filter-select">
+                        <option value="">All Subjects</option>
+                        <option value="math">Mathematics</option>
+                        <option value="science">Science</option>
+                    </select>
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="excellent">Excellent (≥80%)</option>
+                        <option value="good">Good (60-79%)</option>
+                        <option value="needsHelp">Needs Help (<60%)</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Students List Table -->
+            <section class="students-table-section">
+                <h3 data-i18n="student_progress">Student Progress</h3>
+                <div class="table-responsive">
+                    <table class="students-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="student_name">Student Name</th>
+                                <th data-i18n="enrollment_id">Enrollment ID</th>
+                                <th data-i18n="email">Email</th>
+                                <th data-i18n="math_score">Math Score</th>
+                                <th data-i18n="science_score">Science Score</th>
+                                <th data-i18n="overall">Overall</th>
+                                <th data-i18n="status">Status</th>
+                                <th data-i18n="action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Weak Students Alert -->
+            <section class="weak-students-section">
+                <h3 data-i18n="students_need_support">Students Needing Support</h3>
+                <div id="weakStudentsList" class="weak-students-list">
+                    <!-- Dynamically populated -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Student Detail Modal -->
+    <div id="studentDetailModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <button class="modal-close" aria-label="Close">&times;</button>
+            <h2 id="detailStudentName">Student Name</h2>
+            <div class="student-detail-content">
+                <div class="detail-section">
+                    <h4 data-i18n="contact_info">Contact Information</h4>
+                    <p><span data-i18n="email">Email:</span> <span id="detailEmail"></span></p>
+                    <p><span data-i18n="enrollment_id">Enrollment ID:</span> <span id="detailEnrollmentId"></span></p>
+                </div>
+                <div class="detail-section">
+                    <h4 data-i18n="performance">Performance</h4>
+                    <div class="subject-performance">
+                        <div class="subject-card">
+                            <h5>Mathematics</h5>
+                            <div class="score-display">
+                                <span class="score-value" id="detailMathScore">0%</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="detailMathProgress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="subject-card">
+                            <h5>Science</h5>
+                            <div class="score-display">
+                                <span class="score-value" id="detailScienceScore">0%</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="detailScienceProgress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <h4 data-i18n="recent_quizzes">Recent Quizzes</h4>
+                    <div id="detailRecentQuizzes" class="recent-quizzes">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="sendMessageBtn" class="btn btn-secondary" data-i18n="send_message">Send Message</button>
+                <button id="closeDetailBtn" class="btn btn-primary" data-i18n="close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="../js/indexedDB.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/sync.js"></script>
+    <script src="../js/ui.js"></script>
+    <script>
+        // Initialize teacher dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Check authentication
+                const currentUser = getCurrentUser();
+                if (!currentUser || currentUser.userType !== 'teacher') {
+                    window.location.href = '../index.html';
+                    return;
+                }
+
+                // Update header
+                document.getElementById('teacherName').textContent = currentUser.name || 'Teacher';
+
+                // Load all students
+                const allUsers = await getAllUsers();
+                const studentList = allUsers.filter(u => u.userType === 'student');
+
+                // Render students grid
+                const studentsGrid = document.getElementById('studentsGrid');
+                for (const student of studentList) {
+                    const studentProgress = await getAllProgress(student.id);
+                    const completed = studentProgress.filter(p => p.completed).length;
+                    const avgScore = studentProgress.length > 0 
+                        ? Math.round(studentProgress.reduce((sum, p) => sum + (p.score || 0), 0) / studentProgress.length)
+                        : 0;
+
+                    const card = document.createElement('div');
+                    card.className = 'student-card';
+                    card.innerHTML = `
+                        <h4>${student.name}</h4>
+                        <p>${student.email}</p>
+                        <div class="student-stats-mini">
+                            <span>${completed} lessons</span>
+                            <span>${avgScore}% avg</span>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="alert('View details for ' + '${student.name}')">View Details</button>
+                    `;
+                    studentsGrid.appendChild(card);
+                }
+
+                // Class statistics
+                const allLessons = await getAllLessons();
+                const allProgress = [];
+                for (const student of studentList) {
+                    allProgress.push(...await getAllProgress(student.id));
+                }
+                const avgClassScore = allProgress.length > 0
+                    ? Math.round(allProgress.reduce((sum, p) => sum + (p.score || 0), 0) / allProgress.length)
+                    : 0;
+
+                document.getElementById('totalStudents').textContent = studentList.length;
+                document.getElementById('classAverage').textContent = avgClassScore + '%';
+                document.getElementById('totalLessonsCount').textContent = allLessons.length;
+
+                // Online status
+                updateOnlineStatus();
+                window.addEventListener('online', updateOnlineStatus);
+                window.addEventListener('offline', updateOnlineStatus);
+
+                // Logout button
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    logout();
+                    window.location.href = '../index.html';
+                });
+
+                // Language toggle
+                document.getElementById('languageToggle').addEventListener('click', () => {
+                    const languages = ['en', 'es', 'ha', 'sw'];
+                    const currentLang = localStorage.getItem('language') || 'en';
+                    const nextIndex = (languages.indexOf(currentLang) + 1) % languages.length;
+                    localStorage.setItem('language', languages[nextIndex]);
+                    location.reload();
+                });
+
+            } catch (error) {
+                console.error('Error initializing teacher dashboard:', error);
+                alert('Error loading dashboard. Please try again.');
+            }
+        });
+
+        function updateOnlineStatus() {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            const banner = document.getElementById('offlineBanner');
+            
+            if (navigator.onLine) {
+                dot.classList.add('online');
+                text.textContent = 'Online';
+                banner.classList.add('hidden');
+            } else {
+                dot.classList.remove('online');
+                text.textContent = 'Offline';
+                banner.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

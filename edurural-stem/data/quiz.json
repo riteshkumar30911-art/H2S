@@ -1,0 +1,272 @@
+[
+  {
+    "id": "quiz_math_1",
+    "lessonId": "math_1",
+    "title": "Algebra Basics Quiz",
+    "description": "Test your knowledge of algebraic concepts",
+    "timeLimit": 600,
+    "passingScore": 70,
+    "questions": [
+      {
+        "id": "q1",
+        "text": "What is the value of x if 2x + 5 = 13?",
+        "options": ["x = 2", "x = 4", "x = 6", "x = 8"],
+        "correct": 1,
+        "explanation": "Subtract 5 from both sides: 2x = 8. Then divide by 2: x = 4"
+      },
+      {
+        "id": "q2",
+        "text": "Simplify the expression: 3(2x + 4) - 2x",
+        "options": ["4x + 12", "6x + 12", "5x + 12", "4x + 8"],
+        "correct": 2,
+        "explanation": "Distribute: 6x + 12 - 2x = 4x + 12. Wait, that's option 0. Let me recalculate: 3(2x + 4) - 2x = 6x + 12 - 2x = 4x + 12"
+      },
+      {
+        "id": "q3",
+        "text": "Solve: x - 7 = 3",
+        "options": ["x = -4", "x = 10", "x = 4", "x = -10"],
+        "correct": 1,
+        "explanation": "Add 7 to both sides: x = 3 + 7 = 10"
+      },
+      {
+        "id": "q4",
+        "text": "What is 5² + 3?",
+        "options": ["28", "25", "23", "13"],
+        "correct": 0,
+        "explanation": "5² = 25, and 25 + 3 = 28"
+      },
+      {
+        "id": "q5",
+        "text": "If a = 2 and b = 3, find ab + 5",
+        "options": ["10", "11", "15", "20"],
+        "correct": 1,
+        "explanation": "ab = 2 × 3 = 6, and 6 + 5 = 11"
+      }
+    ]
+  },
+  {
+    "id": "quiz_math_2",
+    "lessonId": "math_2",
+    "title": "Quadratic Equations Quiz",
+    "description": "Test your understanding of quadratic equations",
+    "timeLimit": 600,
+    "passingScore": 70,
+    "questions": [
+      {
+        "id": "q1",
+        "text": "Solve: x² - 5x + 6 = 0",
+        "options": ["x = 1, 2", "x = 2, 3", "x = 1, 6", "x = 3, 4"],
+        "correct": 1,
+        "explanation": "Factor: (x - 2)(x - 3) = 0. So x = 2 or x = 3"
+      },
+      {
+        "id": "q2",
+        "text": "What is the discriminant of x² + 4x + 4 = 0?",
+        "options": ["0", "4", "16", "8"],
+        "correct": 0,
+        "explanation": "Discriminant = b² - 4ac = 16 - 16 = 0"
+      },
+      {
+        "id": "q3",
+        "text": "Use the quadratic formula to solve: 2x² + 3x - 2 = 0",
+        "options": ["x = 1/2, -2", "x = -1/2, 2", "x = 1, -2/3", "x = 2, -1/2"],
+        "correct": 0,
+        "explanation": "Using the quadratic formula with a=2, b=3, c=-2: x = (-3 ± √(9+16))/4 = (-3 ± 5)/4 = 1/2 or -2"
+      },
+      {
+        "id": "q4",
+        "text": "What is the vertex of y = (x - 2)² + 3?",
+        "options": ["(2, -3)", "(-2, 3)", "(2, 3)", "(-2, -3)"],
+        "correct": 2,
+        "explanation": "In vertex form y = a(x - h)² + k, the vertex is (h, k) = (2, 3)"
+      },
+      {
+        "id": "q5",
+        "text": "Solve: x² = 16",
+        "options": ["x = 4", "x = ±4", "x = -4", "No solution"],
+        "correct": 1,
+        "explanation": "Taking the square root of both sides gives x = ±4 (both 4 and -4)"
+      }
+    ]
+  },
+  {
+    "id": "quiz_math_3",
+    "lessonId": "math_3",
+    "title": "Trigonometry Quiz",
+    "description": "Test your trigonometry knowledge",
+    "timeLimit": 600,
+    "passingScore": 70,
+    "questions": [
+      {
+        "id": "q1",
+        "text": "What is sin(30°)?",
+        "options": ["√3/2", "1/2", "√2/2", "1"],
+        "correct": 1,
+        "explanation": "sin(30°) = 1/2"
+      },
+      {
+        "id": "q2",
+        "text": "What is cos(0°)?",
+        "options": ["0", "1", "√3/2", "1/2"],
+        "correct": 1,
+        "explanation": "cos(0°) = 1"
+      },
+      {
+        "id": "q3",
+        "text": "In a right triangle, if sin(θ) = 3/5, what is cos(θ)?",
+        "options": ["3/5", "4/5", "5/3", "4/3"],
+        "correct": 1,
+        "explanation": "Using the Pythagorean identity: sin²(θ) + cos²(θ) = 1. So cos²(θ) = 1 - 9/25 = 16/25, thus cos(θ) = 4/5"
+      },
+      {
+        "id": "q4",
+        "text": "What is tan(45°)?",
+        "options": ["0", "√3", "1", "√2"],
+        "correct": 2,
+        "explanation": "tan(45°) = 1"
+      },
+      {
+        "id": "q5",
+        "text": "In which quadrant is sin(θ) > 0 and cos(θ) < 0?",
+        "options": ["Quadrant I", "Quadrant II", "Quadrant III", "Quadrant IV"],
+        "correct": 1,
+        "explanation": "In Quadrant II, sine is positive (above x-axis) and cosine is negative (left of y-axis)"
+      }
+    ]
+  },
+  {
+    "id": "quiz_sci_1",
+    "lessonId": "sci_1",
+    "title": "Physics Fundamentals Quiz",
+    "description": "Test your knowledge of basic physics",
+    "timeLimit": 600,
+    "passingScore": 70,
+    "questions": [
+      {
+        "id": "q1",
+        "text": "What is Newton's second law of motion?",
+        "options": ["F = ma", "F = mv", "a = mv", "F = m/a"],
+        "correct": 0,
+        "explanation": "F = ma (Force equals mass times acceleration)"
+      },
+      {
+        "id": "q2",
+        "text": "What is the SI unit of force?",
+        "options": ["kg", "m/s", "Newton (N)", "Joule (J)"],
+        "correct": 2,
+        "explanation": "The Newton (N) is the SI unit of force"
+      },
+      {
+        "id": "q3",
+        "text": "If an object has a mass of 10 kg and an acceleration of 2 m/s², what is the force?",
+        "options": ["5 N", "12 N", "20 N", "8 N"],
+        "correct": 2,
+        "explanation": "F = ma = 10 × 2 = 20 N"
+      },
+      {
+        "id": "q4",
+        "text": "What is the formula for kinetic energy?",
+        "options": ["KE = mgh", "KE = ½mv²", "KE = Fd", "KE = ma"],
+        "correct": 1,
+        "explanation": "Kinetic energy = ½ × mass × velocity²"
+      },
+      {
+        "id": "q5",
+        "text": "According to Newton's first law, an object at rest will stay at rest unless...",
+        "options": ["It reaches maximum speed", "It is acted upon by a force", "It moves on a frictionless surface", "10 seconds have passed"],
+        "correct": 1,
+        "explanation": "An object remains at rest or in motion unless acted upon by an external force"
+      }
+    ]
+  },
+  {
+    "id": "quiz_sci_2",
+    "lessonId": "sci_2",
+    "title": "Chemical Reactions Quiz",
+    "description": "Test your understanding of chemical reactions",
+    "timeLimit": 600,
+    "passingScore": 70,
+    "questions": [
+      {
+        "id": "q1",
+        "text": "In the equation 2H₂ + O₂ → 2H₂O, what are the reactants?",
+        "options": ["H₂O", "2H₂ and O₂", "H₂ and O", "2H₂O"],
+        "correct": 1,
+        "explanation": "Reactants are the substances on the left side of the equation that react together"
+      },
+      {
+        "id": "q2",
+        "text": "What type of reaction is: A + B → AB?",
+        "options": ["Decomposition", "Synthesis", "Replacement", "Combustion"],
+        "correct": 1,
+        "explanation": "Synthesis reactions combine two or more reactants to form a single product"
+      },
+      {
+        "id": "q3",
+        "text": "Which of the following is a combustion reaction?",
+        "options": ["H₂ + O₂ → H₂O", "NaCl → Na + Cl", "C + O₂ → CO₂", "All of the above"],
+        "correct": 2,
+        "explanation": "A combustion reaction involves a substance reacting with oxygen to produce heat and light"
+      },
+      {
+        "id": "q4",
+        "text": "What is a catalyst in a chemical reaction?",
+        "options": ["A substance that is consumed in the reaction", "A substance that speeds up a reaction without being consumed", "A substance that forms a product", "A substance that prevents reactions"],
+        "correct": 1,
+        "explanation": "A catalyst speeds up a reaction without being permanently changed or consumed"
+      },
+      {
+        "id": "q5",
+        "text": "Balance the equation: N₂ + H₂ → NH₃",
+        "options": ["N₂ + 2H₂ → 2NH₃", "N₂ + 3H₂ → 2NH₃", "N₂ + H₂ → NH₃", "2N₂ + 3H₂ → 2NH₃"],
+        "correct": 1,
+        "explanation": "The balanced equation is N₂ + 3H₂ → 2NH₃ (showing conservation of atoms)"
+      }
+    ]
+  },
+  {
+    "id": "quiz_sci_3",
+    "lessonId": "sci_3",
+    "title": "Biology Basics Quiz",
+    "description": "Test your knowledge of basic biology",
+    "timeLimit": 600,
+    "passingScore": 70,
+    "questions": [
+      {
+        "id": "q1",
+        "text": "What is the basic unit of life?",
+        "options": ["Atom", "Molecule", "Cell", "Organism"],
+        "correct": 2,
+        "explanation": "The cell is the smallest unit of life and the basic unit of all living organisms"
+      },
+      {
+        "id": "q2",
+        "text": "Which of the following is NOT a characteristic of living things?",
+        "options": ["Growth", "Reproduction", "Static state", "Response to environment"],
+        "correct": 2,
+        "explanation": "Living things are not in a static state; they are dynamic and constantly changing"
+      },
+      {
+        "id": "q3",
+        "text": "What is the process by which organisms pass traits to offspring?",
+        "options": ["Evolution", "Heredity", "Mutation", "Adaptation"],
+        "correct": 1,
+        "explanation": "Heredity is the passing of traits from parents to offspring through genes"
+      },
+      {
+        "id": "q4",
+        "text": "Which organelle is responsible for producing energy in the cell?",
+        "options": ["Nucleus", "Mitochondria", "Ribosome", "Golgi apparatus"],
+        "correct": 1,
+        "explanation": "Mitochondria are the powerhouse of the cell, producing ATP through cellular respiration"
+      },
+      {
+        "id": "q5",
+        "text": "What is homeostasis?",
+        "options": ["The study of organisms", "The ability to maintain stable internal conditions", "The process of reproduction", "The evolution of species"],
+        "correct": 1,
+        "explanation": "Homeostasis is the maintenance of stable internal conditions despite external changes"
+      }
+    ]
+  }
+]

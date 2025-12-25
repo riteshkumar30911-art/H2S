@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4CAF50">
+    <title>Quiz - EduRural STEM</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="quiz-page">
+    <div class="offline-banner hidden" id="offlineBanner">
+        <span class="offline-icon">⚠️</span>
+        <span class="offline-text" data-i18n="offline_mode">You are in Offline Mode</span>
+    </div>
+
+    <nav class="navbar">
+        <div class="navbar-content">
+            <button id="backBtn" class="btn btn-icon" aria-label="Back">← <span data-i18n="back">Back</span></button>
+            <h1 class="navbar-logo">
+                <span class="logo-icon">🚀</span>
+                <span data-i18n="app_name">EduRural STEM</span>
+            </h1>
+            <div class="navbar-actions">
+                <button id="languageToggle" class="language-toggle">
+                    <span class="lang-indicator" data-lang="en">EN</span>
+                    <span class="lang-separator">/</span>
+                    <span class="lang-indicator" data-lang="hi">HI</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="quiz-main">
+        <div class="quiz-container">
+            <!-- Quiz Header with Timer -->
+            <header class="quiz-header">
+                <h1 id="lessonName" class="quiz-title">Lesson Quiz</h1>
+                <div class="quiz-meta">
+                    <div class="timer" id="timer">
+                        <span data-i18n="time">Time</span>: <span id="timerValue">10:00</span>
+                    </div>
+                    <div class="questions-counter">
+                        <span data-i18n="question">Question</span> <span id="currentQuestion">1</span> <span data-i18n="of">of</span> <span id="totalQuestions">5</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Quiz Progress -->
+            <div class="quiz-progress">
+                <div id="progressBar" class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 20%"></div>
+                </div>
+            </div>
+
+            <!-- Quiz Questions -->
+            <form id="quizForm" class="quiz-form">
+                <div id="questionsContainer" class="questions-container">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <div class="quiz-actions">
+                    <button type="button" id="prevBtn" class="btn btn-secondary" data-i18n="previous_question">← Previous</button>
+                    <button type="button" id="nextBtn" class="btn btn-secondary" data-i18n="next_question">Next →</button>
+                    <button type="submit" id="submitBtn" class="btn btn-primary" style="display: none;" data-i18n="submit_quiz">Submit Quiz</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Quiz Results Modal -->
+    <div id="resultsModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 data-i18n="quiz_completed">Quiz Completed!</h2>
+            <div class="results-container">
+                <div class="score-display">
+                    <div class="score-circle">
+                        <span id="scorePercentage">0%</span>
+                    </div>
+                    <div class="score-feedback" id="scoreFeedback"></div>
+                </div>
+                <div class="results-details">
+                    <div class="result-item">
+                        <span data-i18n="correct_answers">Correct Answers:</span>
+                        <span id="correctCount">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span data-i18n="total_questions">Total Questions:</span>
+                        <span id="resultTotalQuestions">5</span>
+                    </div>
+                    <div class="result-item">
+                        <span data-i18n="time_taken">Time Taken:</span>
+                        <span id="timeTaken">0 min</span>
+                    </div>
+                </div>
+            </div>
+            <div class="badge-earned hidden" id="badgeEarned">
+                <span class="badge-icon">🏆</span>
+                <p data-i18n="new_badge">You earned a new badge!</p>
+            </div>
+            <button id="closeResultsBtn" class="btn btn-primary" data-i18n="continue">Continue</button>
+        </div>
+    </div>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="../js/indexedDB.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/router.js"></script>
+    <script src="../js/sync.js"></script>
+    <script src="../js/ui.js"></script>
+    <script>
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let answers = {};
+        let startTime = null;
+
+        // Initialize quiz page
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const currentUser = getCurrentUser();
+                if (!currentUser) {
+                    window.location.href = '../index.html';
+                    return;
+                }
+
+                const params = new URLSearchParams(window.location.search);
+                const quizId = params.get('id') || params.get('lessonId');
+
+                // Load quiz
+                currentQuiz = await getQuiz(quizId);
+                if (!currentQuiz || !currentQuiz.questions) {
+                    document.getElementById('questionsContainer').innerHTML = '<p>Quiz not found.</p>';
+                    return;
+                }
+
+                startTime = Date.now();
+
+                // Update title
+                document.getElementById('lessonName').textContent = currentQuiz.title || 'Quiz';
+                document.getElementById('totalQuestions').textContent = currentQuiz.questions.length;
+                document.getElementById('resultTotalQuestions').textContent = currentQuiz.questions.length;
+
+                // Render first question
+                renderQuestion();
+
+                // Event listeners
+                document.getElementById('prevBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    prevQuestion();
+                });
+                document.getElementById('nextBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    nextQuestion();
+                });
+                document.getElementById('quizForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    submitQuiz();
+                });
+
+                // Back button
+                document.getElementById('backBtn').addEventListener('click', () => {
+                    if (confirm('Are you sure you want to exit the quiz?')) {
+                        window.history.back();
+                    }
+                });
+
+                // Language toggle
+                document.getElementById('languageToggle').addEventListener('click', () => {
+                    const languages = ['en', 'es', 'ha', 'sw'];
+                    const currentLang = localStorage.getItem('language') || 'en';
+                    const nextIndex = (languages.indexOf(currentLang) + 1) % languages.length;
+                    localStorage.setItem('language', languages[nextIndex]);
+                    location.reload();
+                });
+
+            } catch (error) {
+                console.error('Error loading quiz:', error);
+                document.getElementById('questionsContainer').innerHTML = '<p>Error loading quiz.</p>';
+            }
+        });
+
+        function renderQuestion() {
+            if (!currentQuiz || currentQuestionIndex >= currentQuiz.questions.length) return;
+
+            const question = currentQuiz.questions[currentQuestionIndex];
+            const container = document.getElementById('questionsContainer');
+
+            let html = `
+                <div class="question-card">
+                    <div class="question-number">Question ${currentQuestionIndex + 1}</div>
+                    <div class="question-text">${question.text}</div>
+                    <div class="options-list">
+            `;
+
+            if (question.options && Array.isArray(question.options)) {
+                question.options.forEach((option, index) => {
+                    const selected = answers[question.id] === index ? 'checked' : '';
+                    html += `
+                        <label class="option-label">
+                            <input type="radio" name="option_${question.id}" value="${index}" ${selected}>
+                            <span>${option.text || ''}</span>
+                        </label>
+                    `;
+                });
+            }
+
+            html += `</div></div>`;
+            container.innerHTML = html;
+
+            // Add change listeners
+            document.querySelectorAll(`input[name="option_${question.id}"]`).forEach(input => {
+                input.addEventListener('change', (e) => {
+                    answers[question.id] = parseInt(e.target.value);
+                });
+            });
+
+            // Update progress
+            const percentage = ((currentQuestionIndex + 1) / currentQuiz.questions.length) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+
+            // Update button visibility
+            document.getElementById('prevBtn').style.display = currentQuestionIndex > 0 ? 'block' : 'none';
+            document.getElementById('nextBtn').style.display = currentQuestionIndex < currentQuiz.questions.length - 1 ? 'block' : 'none';
+            document.getElementById('submitBtn').style.display = currentQuestionIndex === currentQuiz.questions.length - 1 ? 'block' : 'none';
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentQuiz.questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        async function submitQuiz() {
+            const currentUser = getCurrentUser();
+            let score = 0;
+            const totalQuestions = currentQuiz.questions.length;
+
+            // Calculate score
+            currentQuiz.questions.forEach((question) => {
+                const userAnswer = answers[question.id];
+                if (userAnswer !== undefined && question.options[userAnswer] && question.options[userAnswer].isCorrect) {
+                    score++;
+                }
+            });
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const timeTaken = Math.round((Date.now() - startTime) / 1000 / 60);
+
+            // Save result
+            await updateProgress(currentUser.id, currentQuiz.id, {
+                score: percentage,
+                completed: true,
+                timestamp: Date.now()
+            });
+
+            // Show results
+            document.getElementById('scorePercentage').textContent = percentage + '%';
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('timeTaken').textContent = timeTaken + ' min';
+
+            if (percentage >= (currentQuiz.passingScore || 70)) {
+                document.getElementById('scoreFeedback').textContent = 'Great job!';
+                document.getElementById('badgeEarned').classList.remove('hidden');
+            } else {
+                document.getElementById('scoreFeedback').textContent = 'You can do better. Keep practicing!';
+            }
+
+            // Hide quiz form, show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('resultsModal').classList.remove('hidden');
+
+            // Close button
+            document.getElementById('closeResultsBtn').addEventListener('click', () => {
+                window.location.href = 'student.html';
+            });
+        }
+    </script>
+</body>
+</html>

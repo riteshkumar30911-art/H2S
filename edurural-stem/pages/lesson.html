@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4CAF50">
+    <title>Lesson - EduRural STEM</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="lesson-page">
+    <div class="offline-banner hidden" id="offlineBanner">
+        <span class="offline-icon">⚠️</span>
+        <span class="offline-text" data-i18n="offline_mode">You are in Offline Mode</span>
+    </div>
+
+    <nav class="navbar">
+        <div class="navbar-content">
+            <button id="backBtn" class="btn btn-icon" aria-label="Back">← <span data-i18n="back">Back</span></button>
+            <h1 class="navbar-logo">
+                <span class="logo-icon">🚀</span>
+                <span data-i18n="app_name">EduRural STEM</span>
+            </h1>
+            <div class="navbar-actions">
+                <button id="languageToggle" class="language-toggle">
+                    <span class="lang-indicator" data-lang="en">EN</span>
+                    <span class="lang-separator">/</span>
+                    <span class="lang-indicator" data-lang="hi">HI</span>
+                </button>
+                <button id="logoutBtn" class="btn btn-small" data-i18n="logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="lesson-main">
+        <div class="lesson-container">
+            <!-- Lesson Header -->
+            <header class="lesson-header">
+                <div class="lesson-breadcrumb">
+                    <span id="subjectName" class="breadcrumb-item">Subject</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span id="lessonName" class="breadcrumb-item">Lesson</span>
+                </div>
+                <h1 id="lessonTitle" class="lesson-title">Lesson Title</h1>
+                <div class="lesson-meta">
+                    <span class="lesson-duration" id="lessonDuration">5 min read</span>
+                    <span class="lesson-difficulty" id="lessonDifficulty">Beginner</span>
+                </div>
+            </header>
+
+            <!-- Lesson Content -->
+            <article class="lesson-content" id="lessonContent">
+                <!-- Dynamically populated from lessons.json -->
+            </article>
+
+            <!-- Lesson Actions -->
+            <section class="lesson-actions">
+                <button id="prevLessonBtn" class="btn btn-secondary" data-i18n="previous_lesson">← Previous</button>
+                <button id="startQuizBtn" class="btn btn-primary" data-i18n="start_quiz">Start Quiz →</button>
+                <button id="nextLessonBtn" class="btn btn-secondary" data-i18n="next_lesson">Next →</button>
+            </section>
+
+            <!-- Progress Bar -->
+            <div class="lesson-progress">
+                <div class="progress-label">
+                    <span data-i18n="course_progress">Course Progress</span>
+                    <span id="progressPercentage">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="../js/indexedDB.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/router.js"></script>
+    <script src="../js/sync.js"></script>
+    <script src="../js/ui.js"></script>
+    <script>
+        // Initialize lesson page
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const currentUser = getCurrentUser();
+                if (!currentUser) {
+                    window.location.href = '../index.html';
+                    return;
+                }
+
+                const params = new URLSearchParams(window.location.search);
+                const lessonId = params.get('id') || 'lesson-001';
+                const category = params.get('category');
+
+                // Load lesson
+                const lesson = await getLesson(lessonId);
+                if (!lesson) {
+                    document.getElementById('lessonContent').innerHTML = '<p>Lesson not found.</p>';
+                    return;
+                }
+
+                // Render lesson
+                document.getElementById('lessonTitle').textContent = lesson.title || 'Untitled Lesson';
+                document.getElementById('subjectName').textContent = lesson.category || 'Subject';
+                document.getElementById('lessonName').textContent = lesson.title || 'Lesson';
+                document.getElementById('lessonDuration').textContent = (lesson.duration || 5) + ' min read';
+                document.getElementById('lessonDifficulty').textContent = lesson.level || 'Beginner';
+                document.getElementById('lessonContent').innerHTML = lesson.content || '<p>No content available.</p>';
+
+                // Back button
+                document.getElementById('backBtn').addEventListener('click', () => {
+                    if (category) {
+                        window.location.href = 'student.html?category=' + encodeURIComponent(category);
+                    } else {
+                        window.location.href = currentUser.userType === 'teacher' ? 'teacher.html' : 'student.html';
+                    }
+                });
+
+                // Start quiz button
+                document.getElementById('startQuizBtn').addEventListener('click', () => {
+                    window.location.href = 'quiz.html?lessonId=' + lessonId;
+                });
+
+                // Logout button
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    logout();
+                    window.location.href = '../index.html';
+                });
+
+                // Language toggle
+                document.getElementById('languageToggle').addEventListener('click', () => {
+                    const languages = ['en', 'es', 'ha', 'sw'];
+                    const currentLang = localStorage.getItem('language') || 'en';
+                    const nextIndex = (languages.indexOf(currentLang) + 1) % languages.length;
+                    localStorage.setItem('language', languages[nextIndex]);
+                    location.reload();
+                });
+
+                // Update progress
+                const allProgress = await getAllProgress(currentUser.id);
+                const completed = allProgress.filter(p => p.completed).length;
+                const allLessons = await getAllLessons();
+                const percentage = Math.round((completed / allLessons.length) * 100);
+                document.getElementById('progressPercentage').textContent = percentage + '%';
+                document.getElementById('progressFill').style.width = percentage + '%';
+
+            } catch (error) {
+                console.error('Error loading lesson:', error);
+                document.getElementById('lessonContent').innerHTML = '<p>Error loading lesson.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

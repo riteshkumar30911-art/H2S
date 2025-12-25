@@ -1,0 +1,74 @@
+[
+  {
+    "id": "math_1",
+    "subject": "math",
+    "title": "Introduction to Algebra",
+    "description": "Learn the basics of algebra including variables and expressions",
+    "difficulty": "Beginner",
+    "duration": "15 min",
+    "order": 1,
+    "content": "<h2>Introduction to Algebra</h2><p>Algebra is a branch of mathematics dealing with symbols and the rules for manipulating those symbols. It's a unifying thread of almost all of mathematics and is essential in everyday problem solving.</p><h3>What is Algebra?</h3><p>Algebra is the study of mathematical symbols and the rules for manipulating these symbols. The symbols represent quantities and relationships between them.</p><h3>Key Concepts</h3><ul><li><strong>Variables:</strong> Symbols (usually letters) that represent unknown values</li><li><strong>Constants:</strong> Fixed numerical values</li><li><strong>Expressions:</strong> Combinations of variables, constants, and operations</li><li><strong>Equations:</strong> Statements showing two expressions are equal</li></ul><h3>Example: Solving Simple Equations</h3><p>If 2x + 5 = 13, what is x?</p><p><strong>Solution:</strong></p><ol><li>2x + 5 = 13</li><li>2x = 13 - 5</li><li>2x = 8</li><li>x = 4</li></ol><h3>Practice Problems</h3><ol><li>Solve: x + 7 = 12</li><li>Solve: 3x = 21</li><li>Solve: 2x - 4 = 6</li></ol>",
+    "tags": ["algebra", "equations", "variables"],
+    "image": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23E8F5E9' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='80' font-weight='bold' fill='%23388E3C' text-anchor='middle' dominant-baseline='middle'%3E2x + 5 = 13%3C/text%3E%3C/svg%3E"
+  },
+  {
+    "id": "math_2",
+    "subject": "math",
+    "title": "Quadratic Equations",
+    "description": "Master quadratic equations and their solutions",
+    "difficulty": "Intermediate",
+    "duration": "20 min",
+    "order": 2,
+    "content": "<h2>Quadratic Equations</h2><p>Quadratic equations are polynomial equations of the second degree. They have the general form: ax² + bx + c = 0</p><h3>Forms of Quadratic Equations</h3><ul><li><strong>Standard Form:</strong> ax² + bx + c = 0</li><li><strong>Vertex Form:</strong> a(x - h)² + k = 0</li><li><strong>Factored Form:</strong> a(x - r)(x - s) = 0</li></ul><h3>Methods to Solve</h3><ol><li>Factoring</li><li>Completing the square</li><li>Quadratic formula: x = (-b ± √(b² - 4ac)) / 2a</li></ol><h3>Example</h3><p>Solve: x² - 5x + 6 = 0</p><p>Using factoring: (x - 2)(x - 3) = 0</p><p>Solutions: x = 2 or x = 3</p>",
+    "tags": ["quadratic", "equations", "algebra"],
+    "image": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23E3F2FD' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='60' font-weight='bold' fill='%231565C0' text-anchor='middle' dominant-baseline='middle'%3Ex² - 5x + 6%3C/text%3E%3C/svg%3E"
+  },
+  {
+    "id": "math_3",
+    "subject": "math",
+    "title": "Trigonometry Basics",
+    "description": "Introduction to trigonometric ratios and identities",
+    "difficulty": "Intermediate",
+    "duration": "18 min",
+    "order": 3,
+    "content": "<h2>Trigonometry Basics</h2><p>Trigonometry is the study of relationships between angles and sides of triangles.</p><h3>Primary Trigonometric Ratios</h3><ul><li><strong>Sine (sin):</strong> Opposite / Hypotenuse</li><li><strong>Cosine (cos):</strong> Adjacent / Hypotenuse</li><li><strong>Tangent (tan):</strong> Opposite / Adjacent</li></ul><h3>Special Angles</h3><table><tr><th>Angle</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th></tr><tr><td>sin</td><td>0</td><td>1/2</td><td>√2/2</td><td>√3/2</td><td>1</td></tr><tr><td>cos</td><td>1</td><td>√3/2</td><td>√2/2</td><td>1/2</td><td>0</td></tr></table><h3>Applications</h3><p>Trigonometry is used in:</p><ul><li>Navigation and surveying</li><li>Engineering and construction</li><li>Physics and astronomy</li><li>Music and sound waves</li></ul>",
+    "tags": ["trigonometry", "angles", "geometry"],
+    "image": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23FFF3E0' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='80' font-weight='bold' fill='%23E65100' text-anchor='middle' dominant-baseline='middle'%3Esin θ%3C/text%3E%3C/svg%3E"
+  },
+  {
+    "id": "sci_1",
+    "subject": "science",
+    "title": "Physics Fundamentals",
+    "description": "Understanding the basic laws and concepts of physics",
+    "difficulty": "Beginner",
+    "duration": "12 min",
+    "order": 1,
+    "content": "<h2>Physics Fundamentals</h2><p>Physics is the natural science that studies matter, motion, and forces. It helps us understand how the universe works.</p><h3>Major Branches of Physics</h3><ul><li><strong>Mechanics:</strong> Study of motion and forces</li><li><strong>Thermodynamics:</strong> Study of heat and energy</li><li><strong>Waves & Optics:</strong> Study of light and sound</li><li><strong>Electromagnetism:</strong> Study of electricity and magnetism</li><li><strong>Modern Physics:</strong> Study of atoms and relativity</li></ul><h3>Fundamental Concepts</h3><ul><li><strong>Force:</strong> A push or pull on an object (F = ma)</li><li><strong>Energy:</strong> The ability to do work</li><li><strong>Motion:</strong> Change in position over time</li><li><strong>Momentum:</strong> Mass times velocity (p = mv)</li></ul><h3>Newton's Laws of Motion</h3><ol><li>An object at rest stays at rest unless acted upon by a force</li><li>F = ma (Force equals mass times acceleration)</li><li>For every action, there is an equal and opposite reaction</li></ol>",
+    "tags": ["physics", "mechanics", "forces"],
+    "image": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23F3E5F5' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='80' font-weight='bold' fill='%236A1B9A' text-anchor='middle' dominant-baseline='middle'%3E⚛️%3C/text%3E%3C/svg%3E"
+  },
+  {
+    "id": "sci_2",
+    "subject": "science",
+    "title": "Chemical Reactions",
+    "description": "Learn about chemical reactions and chemical equations",
+    "difficulty": "Intermediate",
+    "duration": "16 min",
+    "order": 2,
+    "content": "<h2>Chemical Reactions</h2><p>A chemical reaction is a process that leads to the transformation of one set of chemical substances to another.</p><h3>Types of Chemical Reactions</h3><ul><li><strong>Synthesis:</strong> A + B → AB</li><li><strong>Decomposition:</strong> AB → A + B</li><li><strong>Single Replacement:</strong> A + BC → AC + B</li><li><strong>Double Replacement:</strong> AB + CD → AD + CB</li><li><strong>Combustion:</strong> Substance + O₂ → CO₂ + H₂O</li></ul><h3>Chemical Equations</h3><p>A chemical equation shows the reactants and products of a chemical reaction.</p><p><strong>Example:</strong> 2H₂ + O₂ → 2H₂O</p><p>This means: 2 molecules of hydrogen gas react with 1 molecule of oxygen gas to produce 2 molecules of water.</p><h3>Key Concepts</h3><ul><li><strong>Reactants:</strong> Substances that participate in the reaction (left side)</li><li><strong>Products:</strong> Substances produced by the reaction (right side)</li><li><strong>Catalyst:</strong> A substance that speeds up a reaction without being consumed</li><li><strong>Activation Energy:</strong> Energy needed for a reaction to begin</li></ul>",
+    "tags": ["chemistry", "reactions", "equations"],
+    "image": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23E0F2F1' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='60' font-weight='bold' fill='%23004D40' text-anchor='middle' dominant-baseline='middle'%3E⚗️ Chemical Reaction%3C/text%3E%3C/svg%3E"
+  },
+  {
+    "id": "sci_3",
+    "subject": "science",
+    "title": "Biology Basics",
+    "description": "Explore the fundamentals of living organisms",
+    "difficulty": "Beginner",
+    "duration": "14 min",
+    "order": 3,
+    "content": "<h2>Biology Basics</h2><p>Biology is the natural science that studies life and living organisms, including their structure, function, and evolution.</p><h3>Levels of Organization</h3><ol><li>Atoms and Molecules</li><li>Cells (the basic unit of life)</li><li>Tissues</li><li>Organs</li><li>Organ Systems</li><li>Organisms</li><li>Populations</li><li>Communities</li><li>Ecosystems</li><li>The Biosphere</li></ol><h3>Cell Theory</h3><ul><li>All living things are made of cells</li><li>The cell is the basic unit of life</li><li>All cells come from pre-existing cells</li></ul><h3>Major Branches</h3><ul><li><strong>Botany:</strong> Study of plants</li><li><strong>Zoology:</strong> Study of animals</li><li><strong>Genetics:</strong> Study of heredity and genes</li><li><strong>Ecology:</strong> Study of organisms and their environment</li><li><strong>Evolution:</strong> Study of change in organisms over time</li></ul><h3>Characteristics of Living Things</h3><ol><li>Organization and structure</li><li>Metabolism</li><li>Growth and development</li><li>Reproduction</li><li>Response to environment</li><li>Homeostasis</li><li>Evolution</li></ol>",
+    "tags": ["biology", "cells", "organisms"],
+    "image": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23E8F5E9' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='80' font-weight='bold' fill='%231B5E20' text-anchor='middle' dominant-baseline='middle'%3E🧬%3C/text%3E%3C/svg%3E"
+  }
+]

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4CAF50">
+    <title>Student Dashboard - EduRural STEM</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="dashboard-page">
+    <div class="offline-banner hidden" id="offlineBanner">
+        <span class="offline-icon">⚠️</span>
+        <span class="offline-text" data-i18n="offline_mode">You are in Offline Mode</span>
+    </div>
+
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1 class="navbar-logo">
+                <span class="logo-icon">🚀</span>
+                <span data-i18n="app_name">EduRural STEM</span>
+            </h1>
+            <div class="navbar-actions">
+                <div class="status-indicator">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span class="status-text" id="statusText" data-i18n="online">Online</span>
+                </div>
+                <button id="languageToggle" class="language-toggle">
+                    <span class="lang-indicator" data-lang="en">EN</span>
+                    <span class="lang-separator">/</span>
+                    <span class="lang-indicator" data-lang="hi">HI</span>
+                </button>
+                <button id="logoutBtn" class="btn btn-small" data-i18n="logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <!-- User Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-content">
+                    <h2 data-i18n="welcome">Welcome back, <span id="studentName">Student</span>!</h2>
+                    <p class="welcome-subtitle" data-i18n="dashboard_subtitle">Let's continue your learning journey</p>
+                </div>
+                <div class="user-stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="completedLessons">0</div>
+                        <div class="stat-label" data-i18n="lessons_completed">Lessons Completed</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="totalScore">0%</div>
+                        <div class="stat-label" data-i18n="overall_score">Overall Score</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="badgesCount">0</div>
+                        <div class="stat-label" data-i18n="badges_earned">Badges Earned</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Subjects Grid -->
+            <section class="subjects-section">
+                <h3 data-i18n="available_subjects">Available Subjects</h3>
+                <div id="subjectsGrid" class="subjects-grid">
+                    <!-- Dynamically populated -->
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="recent-activity">
+                <h3 data-i18n="recent_activity">Recent Activity</h3>
+                <div id="recentActivityList" class="activity-list">
+                    <!-- Dynamically populated -->
+                </div>
+            </section>
+
+            <!-- Badges Section -->
+            <section class="badges-section">
+                <h3 data-i18n="your_badges">Your Badges</h3>
+                <div id="badgesList" class="badges-grid">
+                    <!-- Dynamically populated -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="../js/indexedDB.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/sync.js"></script>
+    <script src="../js/ui.js"></script>
+    <script>
+        // Initialize student dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Check authentication
+                const currentUser = getCurrentUser();
+                if (!currentUser || currentUser.userType !== 'student') {
+                    window.location.href = '../index.html';
+                    return;
+                }
+
+                // Update welcome message
+                document.getElementById('studentName').textContent = currentUser.name || 'Student';
+
+                // Load and display lessons
+                const lessons = await getAllLessons();
+                const progress = await getAllProgress(currentUser.id);
+
+                // Render subjects grid
+                const subjectsGrid = document.getElementById('subjectsGrid');
+                const categories = [...new Set(lessons.map(l => l.category))];
+
+                categories.forEach(category => {
+                    const categoryLessons = lessons.filter(l => l.category === category);
+                    const card = document.createElement('div');
+                    card.className = 'subject-card';
+                    
+                    const categoryProgress = categoryLessons.reduce((sum, lesson) => {
+                        const lessonProgress = progress.find(p => p.lessonId === lesson.id);
+                        return sum + (lessonProgress?.completed ? 1 : 0);
+                    }, 0);
+                    
+                    const percentage = Math.round((categoryProgress / categoryLessons.length) * 100);
+                    
+                    card.innerHTML = `
+                        <div class="subject-header">
+                            <h4>${category}</h4>
+                            <span class="subject-count">${categoryProgress}/${categoryLessons.length}</span>
+                        </div>
+                        <div class="progress-bar-small">
+                            <div class="progress-fill" style="width: ${percentage}%"></div>
+                        </div>
+                        <button class="btn btn-small btn-primary" onclick="window.location.href='lesson.html?category=${category}'">View Lessons</button>
+                    `;
+                    subjectsGrid.appendChild(card);
+                });
+
+                // Update stats
+                const completedCount = progress.filter(p => p.completed).length;
+                document.getElementById('completedLessons').textContent = completedCount;
+                
+                const avgScore = progress.length > 0 
+                    ? Math.round(progress.reduce((sum, p) => sum + (p.score || 0), 0) / progress.length)
+                    : 0;
+                document.getElementById('totalScore').textContent = avgScore + '%';
+
+                // Update online status
+                updateOnlineStatus();
+                window.addEventListener('online', updateOnlineStatus);
+                window.addEventListener('offline', updateOnlineStatus);
+
+                // Logout button
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    logout();
+                    window.location.href = '../index.html';
+                });
+
+                // Language toggle
+                document.getElementById('languageToggle').addEventListener('click', () => {
+                    const languages = ['en', 'es', 'ha', 'sw'];
+                    const currentLang = localStorage.getItem('language') || 'en';
+                    const nextIndex = (languages.indexOf(currentLang) + 1) % languages.length;
+                    localStorage.setItem('language', languages[nextIndex]);
+                    location.reload();
+                });
+
+            } catch (error) {
+                console.error('Error initializing student dashboard:', error);
+                alert('Error loading dashboard. Please try again.');
+            }
+        });
+
+        function updateOnlineStatus() {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            const banner = document.getElementById('offlineBanner');
+            
+            if (navigator.onLine) {
+                dot.classList.add('online');
+                text.textContent = 'Online';
+                banner.classList.add('hidden');
+            } else {
+                dot.classList.remove('online');
+                text.textContent = 'Offline';
+                banner.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

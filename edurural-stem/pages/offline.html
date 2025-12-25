@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FF9800">
+    <title>Offline Mode - EduRural STEM</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="offline-page">
+    <nav class="navbar">
+        <div class="navbar-content">
+            <h1 class="navbar-logo">
+                <span class="logo-icon">🚀</span>
+                <span data-i18n="app_name">EduRural STEM</span>
+            </h1>
+        </div>
+    </nav>
+
+    <main class="offline-main">
+        <div class="offline-container">
+            <div class="offline-illustration">
+                <span class="offline-icon-large">📡</span>
+                <span class="offline-icon-cross">❌</span>
+            </div>
+
+            <h1 class="offline-title" data-i18n="offline_mode">You are in Offline Mode</h1>
+            <p class="offline-subtitle" data-i18n="offline_subtitle">No internet connection detected</p>
+
+            <div class="offline-info">
+                <p data-i18n="offline_info_1">Don't worry! You can still access cached lessons and complete quizzes.</p>
+                <p data-i18n="offline_info_2">Your progress will be automatically synced when you go back online.</p>
+            </div>
+
+            <div class="offline-features">
+                <div class="feature-box">
+                    <span class="feature-icon">📚</span>
+                    <h3 data-i18n="feature_learn_offline">Learn Offline</h3>
+                    <p data-i18n="feature_learn_offline_desc">Access all downloaded lessons</p>
+                </div>
+                <div class="feature-box">
+                    <span class="feature-icon">✏️</span>
+                    <h3 data-i18n="feature_take_quizzes">Take Quizzes</h3>
+                    <p data-i18n="feature_take_quizzes_desc">Complete quizzes and track scores locally</p>
+                </div>
+                <div class="feature-box">
+                    <span class="feature-icon">💾</span>
+                    <h3 data-i18n="feature_auto_sync">Auto Sync</h3>
+                    <p data-i18n="feature_auto_sync_desc">Data syncs automatically when online</p>
+                </div>
+            </div>
+
+            <div class="offline-actions">
+                <button id="returnToDashboardBtn" class="btn btn-primary" data-i18n="return_to_dashboard">Return to Dashboard</button>
+                <button id="checkConnectionBtn" class="btn btn-secondary" data-i18n="check_connection">Check Connection</button>
+            </div>
+
+            <div class="offline-status">
+                <div class="status-item">
+                    <span class="status-indicator offline">●</span>
+                    <span data-i18n="internet_status">Internet Status:</span>
+                    <span class="status-value" id="connectionStatus">Offline</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-indicator">●</span>
+                    <span data-i18n="app_status">App Status:</span>
+                    <span class="status-value" data-i18n="ready">Ready</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/i18n.js" type="module"></script>
+    <script src="../js/router.js" type="module"></script>
+    <script src="../js/ui.js" type="module"></script>
+    <script>
+        // Handle return to dashboard
+        document.getElementById('returnToDashboardBtn').addEventListener('click', () => {
+            window.location.href = '../pages/student.html';
+        });
+
+        // Check connection periodically
+        document.getElementById('checkConnectionBtn').addEventListener('click', () => {
+            if (navigator.onLine) {
+                alert('Internet connection detected! Syncing...');
+                window.location.href = '../pages/student.html';
+            } else {
+                alert('Still offline. Please check your connection.');
+            }
+        });
+
+        // Update connection status
+        window.addEventListener('online', () => {
+            document.getElementById('connectionStatus').textContent = 'Online';
+            document.querySelector('.status-indicator.offline').classList.remove('offline');
+        });
+
+        window.addEventListener('offline', () => {
+            document.getElementById('connectionStatus').textContent = 'Offline';
+            document.querySelector('.status-indicator').classList.add('offline');
+        });
+    </script>
+</body>
+</html>
